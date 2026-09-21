@@ -1,0 +1,113 @@
+/* 全站樣式 —— 深空藍配色，跟 tv-chart skill 的圖表配色統一 */
+:root {
+  --bg: #04070f; --panel: #0a1222; --grid: #143352;
+  --text: #cfe6ff; --muted: #8fb0d6; --muted2: #5f80a6;
+  --up: #ff5277; --down: #2ee6a8;
+  --cyan: #25e6ff; --orange: #ffb020; --purple: #9b7bff; --gold: #ffd54f;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; background: var(--bg); color: var(--text);
+  font-family: 'Fira Code', 'Microsoft JhengHei', ui-monospace, monospace;
+}
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 16px; }
+
+header.top {
+  border-bottom: 1px solid var(--grid); padding: 14px 16px;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+}
+header.top h1 { font-size: 18px; margin: 0; }
+header.top .sub { color: var(--muted2); font-size: 13px; }
+.breadcrumb { color: var(--muted2); font-size: 13px; margin-bottom: 12px; }
+.breadcrumb a:hover { color: var(--cyan); }
+
+.updated { color: var(--muted2); font-size: 12px; margin: 6px 0 16px; }
+
+.market-summary {
+  background: var(--panel); border: 1px solid var(--grid); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 16px; font-size: 14px; line-height: 1.6;
+}
+
+.grid-cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--panel); border: 1px solid var(--grid); border-radius: 10px;
+  padding: 12px 14px; display: block; transition: border-color .15s;
+}
+.card:hover { border-color: var(--cyan); }
+.card .rank { color: var(--muted2); font-size: 12px; }
+.card .name { font-size: 16px; font-weight: 600; margin: 4px 0; }
+.card .heat-row { display: flex; align-items: center; gap: 8px; }
+.heat-bar { flex: 1; height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.heat-bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--orange), var(--up)); }
+.heat-score { font-size: 13px; color: var(--orange); min-width: 34px; text-align: right; }
+.trend { font-size: 12px; color: var(--muted2); }
+.trend.up { color: var(--up); } .trend.down { color: var(--down); }
+
+table.stocklist { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.stocklist th, table.stocklist td {
+  text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--grid);
+}
+table.stocklist th { color: var(--muted2); font-weight: 500; font-size: 12px; }
+table.stocklist tr:hover td { background: rgba(37,230,255,.05); }
+.flames { font-size: 15px; letter-spacing: 1px; }
+.price-chg.up { color: var(--up); } .price-chg.down { color: var(--down); }
+
+.stock-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.stock-head .symbol { color: var(--muted2); font-size: 14px; }
+.stock-head .name { font-size: 22px; font-weight: 700; }
+.stock-head .last-close { font-size: 18px; }
+.industries-of { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.industries-of a { color: var(--cyan); }
+.industries-of a:hover { text-decoration: underline; }
+
+.flame-panel {
+  background: linear-gradient(135deg, rgba(255,178,32,.12), rgba(255,82,119,.08));
+  border: 1px solid var(--orange); border-radius: 10px; padding: 12px 14px; margin: 12px 0;
+  font-size: 14px; line-height: 1.7;
+}
+.flame-panel .flames-big { font-size: 22px; margin-right: 6px; }
+.flame-panel ul { margin: 6px 0 0; padding-left: 20px; }
+
+.no-flame { color: var(--muted2); font-size: 13px; margin: 12px 0; }
+
+footer.disclaimer {
+  margin-top: 28px; padding: 14px 16px; border-top: 1px solid var(--grid);
+  color: var(--muted2); font-size: 12px; line-height: 1.8;
+}
+footer.disclaimer b { color: var(--muted); }
+
+/* ---- 圖表容器（沿用 tv-chart skill 的骨架規則） ---- */
+.mofi-chart {
+  background: var(--panel); border: 1px solid var(--grid); border-radius: 10px;
+  padding: 12px; margin: 16px 0;
+  font-family: 'Fira Code', 'Microsoft JhengHei', ui-monospace, monospace;
+  overflow: hidden;
+}
+.mofi-chart .tc-readout {
+  display: grid; grid-template-rows: 1fr 1fr;
+  height: 52px; overflow: hidden;
+  padding: 4px 10px; margin-bottom: 8px;
+  background: #06101d; border: 1px solid var(--grid); border-radius: 8px;
+  color: var(--text); font-size: 13px; line-height: 1.4;
+}
+.mofi-chart .tc-ro-line {
+  display: flex; align-items: center; gap: 0 12px;
+  white-space: nowrap; overflow: hidden;
+}
+.mofi-chart .tc-canvas { width: 100%; }
+@media (max-width: 1024px) {
+  .mofi-chart .tc-readout { height: 76px; font-size: 12px; align-content: center; }
+  .mofi-chart .tc-ro-line { flex-wrap: wrap; white-space: normal; gap: 0 9px; }
+}
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin: 4px 2px 0; flex-wrap: wrap; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+
+@media (max-width: 480px) {
+  .wrap { padding: 12px; }
+  header.top h1 { font-size: 16px; }
+  .stock-head .name { font-size: 18px; }
+}

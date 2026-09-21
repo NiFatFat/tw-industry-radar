@@ -1,0 +1,39 @@
+name: 更新產業熱度雷達網站
+
+on:
+  schedule:
+    - cron: "0 9 * * 1-5"   # 09:00 UTC = 17:00 台灣時間，平日收盤後
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 抓鄧哥的產業熱度資料
+        run: python pipeline/fetch_radar.py
+
+      - name: 用 FinMind 抓股價、算均線
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
+        run: python pipeline/fetch_prices.py
+
+      - name: 產生靜態網頁
+        run: python pipeline/build_site.py
+
+      - name: Commit 並推回 repo（若有變動）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --cached --quiet || git commit -m "自動更新產業熱度雷達 $(date -u +%Y-%m-%d)"
+          git pull --rebase --autostash
+          git push
