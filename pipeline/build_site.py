@@ -77,23 +77,71 @@ def flames_for(symbol: str, flags: dict) -> list[str]:
 
 
 def render_index(radar: dict) -> str:
-    rows = []
+    tiles = []
     for ind in radar.get("industries", []):
-        cls = "up" if ind["trend"] == "up" else ("down" if ind["trend"] == "down" else "")
-        rows.append(f"""
-<a class="card" href="industry/{esc(ind['id'])}.html">
-  <div class="rank">第 {ind['rank']} 名</div>
-  <div class="name">{esc(ind['name'])}</div>
-  <div class="heat-row">
-    <div class="heat-bar"><i style="width:{ind['heat_score']}%"></i></div>
-    <div class="heat-score">{ind['heat_score']}</div>
-  </div>
-  <div class="trend {cls}">{trend_arrow(ind['trend'])}　{len(ind['stocks'])} 檔個股</div>
-</a>""")
+        size = ind.get("event_count") or ind.get("heat_score") or 1
+        tiles.append({
+            "size": size,
+            "label": esc(ind["name"]),
+            "scoreLabel": ind["heat_score"],
+            "href": f"industry/{ind['id']}.html",
+            "heat": ind["heat_score"],
+            "rank": ind["rank"],
+            "trend": trend_arrow(ind["trend"]),
+            "stocks": len(ind["stocks"]),
+            "events": ind.get("event_count"),
+        })
+    tiles_json = json.dumps(tiles, ensure_ascii=False, allow_nan=False)
     body = f"""
 <div class="market-summary">{esc(radar.get('market_summary', ''))}</div>
 <div class="updated">產業熱度更新時間：{esc(radar.get('generated_at', '—'))}</div>
-<div class="grid-cards">{''.join(rows)}</div>
+<div class="tm-legend">
+  <span>冷</span><div class="tm-gradient"></div><span>熱（顏色＝熱度分數）</span>
+  <span class="tm-size-note">方塊大小＝過去72小時事件數</span>
+</div>
+<div id="heatmap" class="treemap"></div>
+<div id="tm-tooltip" class="tm-tooltip" hidden></div>
+<script src="assets/treemap.js"></script>
+<script>
+(function() {{
+  var COLORS = ["#184f95","#256abf","#3987e5","#6da7ec","#9ec5f4","#cde2fb"];
+  function hexMix(a, b, t) {{
+    var pa = [1,3,5].map(function(i){{ return parseInt(a.substr(i,2),16); }});
+    var pb = [1,3,5].map(function(i){{ return parseInt(b.substr(i,2),16); }});
+    var c = pa.map(function(v,i){{ return Math.round(v + (pb[i]-v)*t); }});
+    return '#' + c.map(function(v){{ return v.toString(16).padStart(2,'0'); }}).join('');
+  }}
+  function colorForScore(score) {{
+    var t = Math.max(0, Math.min(1, score / 100));
+    var n = COLORS.length - 1, f = t * n, i = Math.floor(f);
+    if (i >= n) return COLORS[n];
+    return hexMix(COLORS[i], COLORS[i+1], f - i);
+  }}
+  var items = {tiles_json};
+  var host = document.getElementById('heatmap');
+  var tooltip = document.getElementById('tm-tooltip');
+  function draw() {{
+    Treemap.render(host, items, {{
+      height: function(w) {{ return Math.round(w * (w < 600 ? 1.3 : 0.6)); }},
+      color: function(d) {{ return colorForScore(d.heat); }},
+      onHover: function(d) {{
+        tooltip.hidden = false;
+        tooltip.innerHTML = '<b>' + d.label + '</b>　第 ' + d.rank + ' 名<br>'
+          + '熱度分數 ' + d.heat + '　' + d.trend + '<br>'
+          + '<span class="muted">' + d.stocks + ' 檔個股　過去72小時 ' + (d.events != null ? d.events : '—') + ' 個事件</span>';
+      }},
+      onMove: function(d, tile, e) {{
+        tooltip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
+        tooltip.style.top = Math.min(e.clientY + 14, window.innerHeight - 100) + 'px';
+      }},
+      onLeave: function() {{ tooltip.hidden = true; }}
+    }});
+  }}
+  draw();
+  var t;
+  window.addEventListener('resize', function() {{ clearTimeout(t); t = setTimeout(draw, 150); }});
+}})();
+</script>
 """
     return page("台股產業熱度雷達", body, depth=0)
 

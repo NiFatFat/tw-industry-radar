@@ -56,6 +56,10 @@ def build():
             "trend": h.get("trend"),
             "why_hot": h.get("why_hot", []),
             "summary": h.get("summary"),
+            "event_count": h.get("event_count"),
+            "news_count": h.get("news_count"),
+            "social_mentions": h.get("social_mentions"),
+            "market_move": h.get("market_move"),
         })
     industries.sort(key=lambda x: (x["rank"] if x["rank"] is not None else 999))
 
