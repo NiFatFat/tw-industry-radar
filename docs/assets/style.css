@@ -29,43 +29,23 @@ header.top .sub { color: var(--muted2); font-size: 13px; }
   padding: 12px 14px; margin-bottom: 16px; font-size: 14px; line-height: 1.6;
 }
 
+.grid-cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--panel); border: 1px solid var(--grid); border-radius: 10px;
+  padding: 12px 14px; display: block; transition: border-color .15s;
+}
+.card:hover { border-color: var(--cyan); }
+.card .rank { color: var(--muted2); font-size: 12px; }
+.card .name { font-size: 16px; font-weight: 600; margin: 4px 0; }
+.card .heat-row { display: flex; align-items: center; gap: 8px; }
+.heat-bar { flex: 1; height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.heat-bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--orange), var(--up)); }
+.heat-score { font-size: 13px; color: var(--orange); min-width: 34px; text-align: right; }
 .trend { font-size: 12px; color: var(--muted2); }
 .trend.up { color: var(--up); } .trend.down { color: var(--down); }
-
-/* ---- 產業熱度熱力圖（treemap） ---- */
-.tm-legend {
-  display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted2);
-  margin: 4px 2px 10px;
-}
-.tm-gradient {
-  width: 160px; height: 10px; border-radius: 5px;
-  background: linear-gradient(90deg, #184f95, #256abf, #3987e5, #6da7ec, #9ec5f4, #cde2fb);
-}
-.tm-size-note { margin-left: auto; }
-.treemap { width: 100%; }
-.tm-tile {
-  position: absolute; display: block; overflow: hidden;
-  border-radius: 4px; padding: 6px 8px; box-sizing: border-box;
-  color: #04070f; text-decoration: none;
-  transition: outline-color .1s;
-  outline: 1px solid rgba(4,7,15,.35); outline-offset: -1px;
-}
-.tm-tile:hover { outline: 2px solid var(--text); z-index: 2; }
-.tm-tile .tm-name {
-  display: block; font-size: 13px; font-weight: 700; line-height: 1.25;
-  text-shadow: 0 1px 1px rgba(255,255,255,.25);
-}
-.tm-tile .tm-score {
-  display: block; font-size: 15px; font-weight: 700; margin-top: 4px;
-}
-.tm-tooltip {
-  position: fixed; z-index: 50; pointer-events: none;
-  background: #06101d; border: 1px solid var(--cyan); border-radius: 8px;
-  padding: 10px 12px; font-size: 13px; line-height: 1.7; max-width: 260px;
-  color: var(--text); box-shadow: 0 4px 16px rgba(0,0,0,.4);
-}
-.tm-tooltip b { color: var(--orange); }
-.tm-tooltip .muted { color: var(--muted2); font-size: 12px; }
 
 table.stocklist { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.stocklist th, table.stocklist td {

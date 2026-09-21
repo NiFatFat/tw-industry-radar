@@ -15,53 +15,241 @@
 
 <div class="market-summary">過去 72 小時，討論度最高的是 晶圓代工（82 分，降溫 3%）。注意力正在流向：機器人、CoWoS。</div>
 <div class="updated">產業熱度更新時間：2026-09-20T08:47:11.098572+08:00</div>
-<div class="tm-legend">
-  <span>冷</span><div class="tm-gradient"></div><span>熱（顏色＝熱度分數）</span>
-  <span class="tm-size-note">方塊大小＝過去72小時事件數</span>
-</div>
-<div id="heatmap" class="treemap"></div>
-<div id="tm-tooltip" class="tm-tooltip" hidden></div>
-<script src="assets/treemap.js"></script>
-<script>
-(function() {
-  var COLORS = ["#184f95","#256abf","#3987e5","#6da7ec","#9ec5f4","#cde2fb"];
-  function hexMix(a, b, t) {
-    var pa = [1,3,5].map(function(i){ return parseInt(a.substr(i,2),16); });
-    var pb = [1,3,5].map(function(i){ return parseInt(b.substr(i,2),16); });
-    var c = pa.map(function(v,i){ return Math.round(v + (pb[i]-v)*t); });
-    return '#' + c.map(function(v){ return v.toString(16).padStart(2,'0'); }).join('');
-  }
-  function colorForScore(score) {
-    var t = Math.max(0, Math.min(1, score / 100));
-    var n = COLORS.length - 1, f = t * n, i = Math.floor(f);
-    if (i >= n) return COLORS[n];
-    return hexMix(COLORS[i], COLORS[i+1], f - i);
-  }
-  var items = [{"size": 80, "label": "晶圓代工", "scoreLabel": 81.8, "href": "industry/foundry.html", "heat": 81.8, "rank": 1, "trend": "－持平", "stocks": 4, "events": 80}, {"size": 87, "label": "重電", "scoreLabel": 66.9, "href": "industry/heavy-electric.html", "heat": 66.9, "rank": 2, "trend": "－持平", "stocks": 5, "events": 87}, {"size": 97, "label": "機器人", "scoreLabel": 52.5, "href": "industry/robotics.html", "heat": 52.5, "rank": 3, "trend": "－持平", "stocks": 5, "events": 97}, {"size": 16, "label": "CoWoS", "scoreLabel": 48.3, "href": "industry/cowos.html", "heat": 48.3, "rank": 4, "trend": "－持平", "stocks": 5, "events": 16}, {"size": 89, "label": "散熱", "scoreLabel": 44.4, "href": "industry/cooling.html", "heat": 44.4, "rank": 5, "trend": "－持平", "stocks": 5, "events": 89}, {"size": 92, "label": "光通訊", "scoreLabel": 41.9, "href": "industry/optical.html", "heat": 41.9, "rank": 6, "trend": "－持平", "stocks": 6, "events": 92}, {"size": 63, "label": "先進封裝", "scoreLabel": 37.8, "href": "industry/adv-packaging.html", "heat": 37.8, "rank": 7, "trend": "－持平", "stocks": 5, "events": 63}, {"size": 86, "label": "航運", "scoreLabel": 37.8, "href": "industry/shipping.html", "heat": 37.8, "rank": 8, "trend": "－持平", "stocks": 5, "events": 86}, {"size": 103, "label": "AI伺服器", "scoreLabel": 36.3, "href": "industry/ai-server.html", "heat": 36.3, "rank": 9, "trend": "－持平", "stocks": 7, "events": 103}, {"size": 88, "label": "電動車", "scoreLabel": 36.2, "href": "industry/ev.html", "heat": 36.2, "rank": 10, "trend": "－持平", "stocks": 5, "events": 88}, {"size": 87, "label": "PCB", "scoreLabel": 34.3, "href": "industry/pcb.html", "heat": 34.3, "rank": 11, "trend": "－持平", "stocks": 6, "events": 87}, {"size": 70, "label": "IC設計", "scoreLabel": 33.1, "href": "industry/ic-design.html", "heat": 33.1, "rank": 12, "trend": "－持平", "stocks": 6, "events": 70}, {"size": 55, "label": "量子運算", "scoreLabel": 33.0, "href": "industry/quantum.html", "heat": 33.0, "rank": 13, "trend": "－持平", "stocks": 3, "events": 55}, {"size": 57, "label": "ASIC", "scoreLabel": 30.5, "href": "industry/asic.html", "heat": 30.5, "rank": 14, "trend": "－持平", "stocks": 5, "events": 57}, {"size": 92, "label": "金融", "scoreLabel": 30.5, "href": "industry/finance.html", "heat": 30.5, "rank": 15, "trend": "－持平", "stocks": 5, "events": 92}, {"size": 62, "label": "GPU", "scoreLabel": 28.6, "href": "industry/gpu.html", "heat": 28.6, "rank": 16, "trend": "－持平", "stocks": 3, "events": 62}, {"size": 62, "label": "封裝測試", "scoreLabel": 27.0, "href": "industry/atp.html", "heat": 27.0, "rank": 17, "trend": "－持平", "stocks": 5, "events": 62}, {"size": 72, "label": "CCL", "scoreLabel": 26.6, "href": "industry/ccl.html", "heat": 26.6, "rank": 18, "trend": "－持平", "stocks": 4, "events": 72}, {"size": 34, "label": "DRAM", "scoreLabel": 26.3, "href": "industry/dram.html", "heat": 26.3, "rank": 19, "trend": "－持平", "stocks": 4, "events": 34}, {"size": 49, "label": "半導體設備", "scoreLabel": 25.5, "href": "industry/semi-equip.html", "heat": 25.5, "rank": 20, "trend": "－持平", "stocks": 5, "events": 49}, {"size": 50, "label": "NAND", "scoreLabel": 22.4, "href": "industry/nand.html", "heat": 22.4, "rank": 21, "trend": "－持平", "stocks": 4, "events": 50}, {"size": 86, "label": "網通", "scoreLabel": 18.7, "href": "industry/networking.html", "heat": 18.7, "rank": 22, "trend": "－持平", "stocks": 5, "events": 86}, {"size": 20, "label": "電源", "scoreLabel": 18.2, "href": "industry/power.html", "heat": 18.2, "rank": 23, "trend": "－持平", "stocks": 5, "events": 20}, {"size": 41, "label": "HBM", "scoreLabel": 18.1, "href": "industry/hbm.html", "heat": 18.1, "rank": 24, "trend": "－持平", "stocks": 4, "events": 41}, {"size": 25, "label": "高速傳輸", "scoreLabel": 17.6, "href": "industry/high-speed.html", "heat": 17.6, "rank": 25, "trend": "－持平", "stocks": 4, "events": 25}, {"size": 35, "label": "儲能", "scoreLabel": 10.7, "href": "industry/ess.html", "heat": 10.7, "rank": 26, "trend": "－持平", "stocks": 5, "events": 35}];
-  var host = document.getElementById('heatmap');
-  var tooltip = document.getElementById('tm-tooltip');
-  function draw() {
-    Treemap.render(host, items, {
-      height: function(w) { return Math.round(w * (w < 600 ? 1.3 : 0.6)); },
-      color: function(d) { return colorForScore(d.heat); },
-      onHover: function(d) {
-        tooltip.hidden = false;
-        tooltip.innerHTML = '<b>' + d.label + '</b>　第 ' + d.rank + ' 名<br>'
-          + '熱度分數 ' + d.heat + '　' + d.trend + '<br>'
-          + '<span class="muted">' + d.stocks + ' 檔個股　過去72小時 ' + (d.events != null ? d.events : '—') + ' 個事件</span>';
-      },
-      onMove: function(d, tile, e) {
-        tooltip.style.left = Math.min(e.clientX + 14, window.innerWidth - 270) + 'px';
-        tooltip.style.top = Math.min(e.clientY + 14, window.innerHeight - 100) + 'px';
-      },
-      onLeave: function() { tooltip.hidden = true; }
-    });
-  }
-  draw();
-  var t;
-  window.addEventListener('resize', function() { clearTimeout(t); t = setTimeout(draw, 150); });
-})();
-</script>
+<div class="grid-cards">
+<a class="card" href="industry/foundry.html">
+  <div class="rank">第 1 名</div>
+  <div class="name">晶圓代工</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:81.8%"></i></div>
+    <div class="heat-score">81.8</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/heavy-electric.html">
+  <div class="rank">第 2 名</div>
+  <div class="name">重電</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:66.9%"></i></div>
+    <div class="heat-score">66.9</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/robotics.html">
+  <div class="rank">第 3 名</div>
+  <div class="name">機器人</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:52.5%"></i></div>
+    <div class="heat-score">52.5</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/cowos.html">
+  <div class="rank">第 4 名</div>
+  <div class="name">CoWoS</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:48.3%"></i></div>
+    <div class="heat-score">48.3</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/cooling.html">
+  <div class="rank">第 5 名</div>
+  <div class="name">散熱</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:44.4%"></i></div>
+    <div class="heat-score">44.4</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/optical.html">
+  <div class="rank">第 6 名</div>
+  <div class="name">光通訊</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:41.9%"></i></div>
+    <div class="heat-score">41.9</div>
+  </div>
+  <div class="trend ">－持平　6 檔個股</div>
+</a>
+<a class="card" href="industry/adv-packaging.html">
+  <div class="rank">第 7 名</div>
+  <div class="name">先進封裝</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:37.8%"></i></div>
+    <div class="heat-score">37.8</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/shipping.html">
+  <div class="rank">第 8 名</div>
+  <div class="name">航運</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:37.8%"></i></div>
+    <div class="heat-score">37.8</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/ai-server.html">
+  <div class="rank">第 9 名</div>
+  <div class="name">AI伺服器</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:36.3%"></i></div>
+    <div class="heat-score">36.3</div>
+  </div>
+  <div class="trend ">－持平　7 檔個股</div>
+</a>
+<a class="card" href="industry/ev.html">
+  <div class="rank">第 10 名</div>
+  <div class="name">電動車</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:36.2%"></i></div>
+    <div class="heat-score">36.2</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/pcb.html">
+  <div class="rank">第 11 名</div>
+  <div class="name">PCB</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:34.3%"></i></div>
+    <div class="heat-score">34.3</div>
+  </div>
+  <div class="trend ">－持平　6 檔個股</div>
+</a>
+<a class="card" href="industry/ic-design.html">
+  <div class="rank">第 12 名</div>
+  <div class="name">IC設計</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:33.1%"></i></div>
+    <div class="heat-score">33.1</div>
+  </div>
+  <div class="trend ">－持平　6 檔個股</div>
+</a>
+<a class="card" href="industry/quantum.html">
+  <div class="rank">第 13 名</div>
+  <div class="name">量子運算</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:33.0%"></i></div>
+    <div class="heat-score">33.0</div>
+  </div>
+  <div class="trend ">－持平　3 檔個股</div>
+</a>
+<a class="card" href="industry/asic.html">
+  <div class="rank">第 14 名</div>
+  <div class="name">ASIC</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:30.5%"></i></div>
+    <div class="heat-score">30.5</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/finance.html">
+  <div class="rank">第 15 名</div>
+  <div class="name">金融</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:30.5%"></i></div>
+    <div class="heat-score">30.5</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/gpu.html">
+  <div class="rank">第 16 名</div>
+  <div class="name">GPU</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:28.6%"></i></div>
+    <div class="heat-score">28.6</div>
+  </div>
+  <div class="trend ">－持平　3 檔個股</div>
+</a>
+<a class="card" href="industry/atp.html">
+  <div class="rank">第 17 名</div>
+  <div class="name">封裝測試</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:27.0%"></i></div>
+    <div class="heat-score">27.0</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/ccl.html">
+  <div class="rank">第 18 名</div>
+  <div class="name">CCL</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:26.6%"></i></div>
+    <div class="heat-score">26.6</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/dram.html">
+  <div class="rank">第 19 名</div>
+  <div class="name">DRAM</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:26.3%"></i></div>
+    <div class="heat-score">26.3</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/semi-equip.html">
+  <div class="rank">第 20 名</div>
+  <div class="name">半導體設備</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:25.5%"></i></div>
+    <div class="heat-score">25.5</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/nand.html">
+  <div class="rank">第 21 名</div>
+  <div class="name">NAND</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:22.4%"></i></div>
+    <div class="heat-score">22.4</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/networking.html">
+  <div class="rank">第 22 名</div>
+  <div class="name">網通</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:18.7%"></i></div>
+    <div class="heat-score">18.7</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/power.html">
+  <div class="rank">第 23 名</div>
+  <div class="name">電源</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:18.2%"></i></div>
+    <div class="heat-score">18.2</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a>
+<a class="card" href="industry/hbm.html">
+  <div class="rank">第 24 名</div>
+  <div class="name">HBM</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:18.1%"></i></div>
+    <div class="heat-score">18.1</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/high-speed.html">
+  <div class="rank">第 25 名</div>
+  <div class="name">高速傳輸</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:17.6%"></i></div>
+    <div class="heat-score">17.6</div>
+  </div>
+  <div class="trend ">－持平　4 檔個股</div>
+</a>
+<a class="card" href="industry/ess.html">
+  <div class="rank">第 26 名</div>
+  <div class="name">儲能</div>
+  <div class="heat-row">
+    <div class="heat-bar"><i style="width:10.7%"></i></div>
+    <div class="heat-score">10.7</div>
+  </div>
+  <div class="trend ">－持平　5 檔個股</div>
+</a></div>
 
 <footer class="disclaimer">
 <b>熱度資料</b>：來自 duang0615/tw-market-radar，是「過去72小時」的即時快照，不是歷史趨勢，不能拿來回測，也不代表「熱門產業之後會漲比較多」——這件事沒有驗證過。<br>
